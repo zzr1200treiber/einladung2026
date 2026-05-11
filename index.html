@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digitale Einladung</title>
 
-<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=BgYH8cZRWQIYyCkHbLnqg7j0wmMGImqDYToGQulZFmR9rLstINv_q6ZI4XAK1nu6BoC7pfuNh0hZNHiU-oEYzPqkiCXK4A9Cp87LTTiAWn7fhTZOccfNVPcA8WpNeE2mOqz12h1WrIrexqvvIPiD_5_Yuq7C5MN2lG6137MLVuH_MX9eSCa6c_34_pvojmrFmX76e3BPtI_WIMS7IesCVzy_NAyY2jCoUCBCuAB9trTXC-jM4mgpv_27rd7M4uP5dVuA9xh2hiWyOvIcMa4OMA" charset="UTF-8"></script><style>
-*{
-    box-sizing:border-box;
-}
+<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=KWh1KF-EcpMWUIlRZ9OMUodJSjO7JFbIHk-KeE3ttrT4e6c0tCemJcNOcaMLn0Tri4f2CO9lHWaFYkyoSE6NAze52Reb6gLa-szxclVbZpVN8MtdNCJh9H63yFD6A848vKv_SDkaiSehZMGDeVoV5wDeNH2HlHaMVb2nfEK4OL3gIZ79cnGUKt04HLY3Zc195Bure0BoeCd2147iwR8ScUOKZCtaMGPXA3v4dzBcEdCf2exgCPsigQMrndEj4dHGk8gAXcRiHLBvZSOf8Fjarg" charset="UTF-8"></script><style>
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -16,12 +14,10 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
     overflow:hidden;
     font-family:Arial,sans-serif;
 }
-
-/* Startbildschirm */
 
 .startscreen{
     position:fixed;
@@ -32,7 +28,7 @@ body{
     justify-content:center;
     align-items:center;
     z-index:100;
-    transition:opacity 0.8s ease, visibility 0.8s ease;
+    transition:opacity .7s ease, visibility .7s ease;
 }
 
 .startscreen.hidden{
@@ -48,17 +44,26 @@ body{
     background:white;
     color:#111;
     cursor:pointer;
-    box-shadow:0 10px 40px rgba(255,255,255,0.25);
+    box-shadow:0 10px 40px rgba(255,255,255,.25);
 }
 
 .starttext{
     margin-top:24px;
     color:white;
     font-size:18px;
-    opacity:0.75;
+    opacity:.75;
+    text-align:center;
 }
 
-/* Bühne */
+.loading{
+    color:white;
+    margin-top:18px;
+    font-size:16px;
+    opacity:.8;
+    display:none;
+}
+
+.loading.visible{display:block}
 
 .stage{
     position:relative;
@@ -68,9 +73,11 @@ body{
     justify-content:center;
     align-items:center;
     perspective:3000px;
+    opacity:0;
+    transition:opacity .6s ease;
 }
 
-/* Karte */
+.stage.visible{opacity:1}
 
 .card{
     position:relative;
@@ -80,11 +87,7 @@ body{
     transform-style:preserve-3d;
 }
 
-.card.open{
-    width:min(840px,95vw);
-}
-
-/* Innenseiten */
+.card.open{width:min(840px,95vw)}
 
 .inside{
     position:absolute;
@@ -93,13 +96,11 @@ body{
     background:white;
     border-radius:20px;
     overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,0.55);
+    box-shadow:0 10px 40px rgba(0,0,0,.55);
     opacity:0;
-    transform:scaleX(0.5);
+    transform:scaleX(.5);
     transform-origin:left center;
-    transition:
-        opacity 0.4s ease 0.45s,
-        transform 1.2s ease;
+    transition:opacity .4s ease .45s, transform 1.2s ease;
 }
 
 .card.open .inside{
@@ -119,9 +120,8 @@ body{
     height:100%;
     object-fit:contain;
     background:white;
+    display:block;
 }
-
-/* Deckblatt */
 
 .cover{
     position:absolute;
@@ -132,14 +132,11 @@ body{
     z-index:20;
     transform-origin:left center;
     transform-style:preserve-3d;
-    transition:
-        transform 1.8s cubic-bezier(.25,.8,.25,1),
-        opacity 0.15s linear 1.15s,
-        visibility 0s linear 1.35s;
+    transition:transform 1.8s cubic-bezier(.25,.8,.25,1), opacity .15s linear 1.15s, visibility 0s linear 1.35s;
     cursor:pointer;
     border-radius:20px;
     overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,0.75);
+    box-shadow:0 10px 40px rgba(0,0,0,.75);
     background:#222;
     backface-visibility:hidden;
 }
@@ -160,17 +157,11 @@ body{
     pointer-events:none;
 }
 
-/* Beim Zurückblättern wieder sauber einblenden */
 .card:not(.open) .cover{
     opacity:1;
     visibility:visible;
-    transition:
-        transform 1.8s cubic-bezier(.25,.8,.25,1),
-        opacity 0.25s linear 0s,
-        visibility 0s linear 0s;
+    transition:transform 1.8s cubic-bezier(.25,.8,.25,1), opacity .25s linear 0s, visibility 0s linear 0s;
 }
-
-/* Schatten */
 
 .fold-shadow{
     position:absolute;
@@ -178,18 +169,14 @@ body{
     top:0;
     width:30px;
     height:100%;
-    background:linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0));
+    background:linear-gradient(to right, rgba(0,0,0,.25), rgba(0,0,0,0));
     opacity:0;
     z-index:10;
-    transition:opacity 0.8s ease 0.8s;
+    transition:opacity .8s ease .8s;
     pointer-events:none;
 }
 
-.card.open .fold-shadow{
-    opacity:1;
-}
-
-/* Buttons */
+.card.open .fold-shadow{opacity:1}
 
 .actionbar{
     position:absolute;
@@ -209,15 +196,11 @@ body{
     cursor:pointer;
     background:white;
     color:#111;
-    box-shadow:0 6px 20px rgba(0,0,0,0.3);
+    box-shadow:0 6px 20px rgba(0,0,0,.3);
     display:none;
 }
 
-.actionbutton.visible{
-    display:block;
-}
-
-/* Hinweis */
+.actionbutton.visible{display:block}
 
 .hint{
     position:absolute;
@@ -232,46 +215,22 @@ body{
     display:none;
 }
 
-.hint.visible{
-    display:block;
-}
+.hint.visible{display:block}
 
 @keyframes pulse{
-    0%{opacity:0.35;}
-    50%{opacity:1;}
-    100%{opacity:0.35;}
+    0%{opacity:.35}
+    50%{opacity:1}
+    100%{opacity:.35}
 }
-
-/* Smartphone */
 
 @media(max-width:700px){
-
-    .card{
-        width:86vw;
-        height:82vh;
-    }
-
-    .card.open{
-        width:96vw;
-        height:82vh;
-    }
-
-    .hint{
-        font-size:18px;
-        bottom:72px;
-    }
-
-    .startbutton{
-        font-size:24px;
-        padding:18px 32px;
-    }
-
-    .actionbutton{
-        font-size:14px;
-        padding:10px 18px;
-    }
+    .card{width:86vw;height:82vh}
+    .card.open{width:96vw;height:82vh}
+    .hint{font-size:18px;bottom:72px}
+    .startbutton{font-size:24px;padding:18px 32px}
+    .actionbutton{font-size:14px;padding:10px 18px}
+    .starttext{font-size:16px;padding:0 24px}
 }
-
 </style>
 </head>
 
@@ -279,102 +238,124 @@ body{
 
 <div class="startscreen" id="startscreen">
     <button class="startbutton" id="startbutton">Einladung öffnen</button>
-    <div class="starttext">Musik startet nach dem Tippen</div>
+    <div class="starttext">Bitte tippen – danach startet die Einladung</div>
+    <div class="loading" id="loading">Einladung wird geladen …</div>
 </div>
 
-<div class="stage">
-
+<div class="stage" id="stage">
     <div class="card" id="card">
-
         <div class="inside">
-            <div class="page">
-                <img src="inside-left.jpg">
-            </div>
-
-            <div class="page">
-                <img src="inside-right.jpg">
-            </div>
+            <div class="page"><img id="insideLeft" alt="Innenseite links"></div>
+            <div class="page"><img id="insideRight" alt="Innenseite rechts"></div>
         </div>
 
         <div class="fold-shadow"></div>
 
         <div class="cover" id="cover">
-            <img src="cover.jpg">
+            <img id="coverImg" alt="Deckblatt">
         </div>
-
     </div>
 
-    <div class="hint visible" id="hint">
-        Zum Aufklappen tippen
-    </div>
+    <div class="hint" id="hint">Zum Aufklappen tippen</div>
 
     <div class="actionbar">
-        <button class="actionbutton" id="closebutton">
-            ⬅ Zurück zum Deckblatt
-        </button>
+        <button class="actionbutton" id="closebutton">⬅ Zurück zum Deckblatt</button>
     </div>
-
 </div>
 
-<audio id="music" loop>
-    <source src="musik.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-
 const startscreen = document.getElementById('startscreen');
 const startbutton = document.getElementById('startbutton');
+const loading = document.getElementById('loading');
 
+const stage = document.getElementById('stage');
 const card = document.getElementById('card');
 const cover = document.getElementById('cover');
 
+const coverImg = document.getElementById('coverImg');
+const insideLeft = document.getElementById('insideLeft');
+const insideRight = document.getElementById('insideRight');
+
 const closebutton = document.getElementById('closebutton');
 const hint = document.getElementById('hint');
-const music = document.getElementById('music');
 
+let music = null;
 let started = false;
 let opened = false;
 
-startbutton.addEventListener('click', () => {
+function cacheBuster(){
+    return '?v=20260620b';
+}
 
+function loadImage(img, src){
+    return new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = src + cacheBuster();
+    });
+}
+
+function startMusic(){
+    music = new Audio('musik.mp3' + cacheBuster());
+    music.loop = true;
+    music.preload = 'none';
+
+    music.play().catch(() => {
+        /* Falls der Browser Audio blockiert, versuchen wir es beim nächsten Tippen erneut. */
+    });
+}
+
+startbutton.addEventListener('click', async () => {
     if(started) return;
 
     started = true;
+    startbutton.disabled = true;
+    loading.classList.add('visible');
+
+    try{
+        await loadImage(coverImg, 'cover.jpg');
+    }catch(e){
+        loading.textContent = 'Deckblatt konnte nicht geladen werden.';
+        return;
+    }
 
     startscreen.classList.add('hidden');
-
+    stage.classList.add('visible');
     hint.classList.add('visible');
 
-    music.play().catch(() => {});
+    startMusic();
 
+    loadImage(insideLeft, 'inside-left.jpg').catch(() => {});
+    loadImage(insideRight, 'inside-right.jpg').catch(() => {});
 });
 
-cover.addEventListener('click', () => {
-
+cover.addEventListener('click', async () => {
     if(!started || opened) return;
 
     opened = true;
+    hint.textContent = 'Innenseiten werden geladen …';
+
+    await Promise.allSettled([
+        insideLeft.src ? Promise.resolve() : loadImage(insideLeft, 'inside-left.jpg'),
+        insideRight.src ? Promise.resolve() : loadImage(insideRight, 'inside-right.jpg')
+    ]);
 
     card.classList.add('open');
-
     hint.classList.remove('visible');
-
     closebutton.classList.add('visible');
 
+    if(music && music.paused){
+        music.play().catch(() => {});
+    }
 });
 
 closebutton.addEventListener('click', () => {
-
     opened = false;
-
     card.classList.remove('open');
-
     closebutton.classList.remove('visible');
-
+    hint.textContent = 'Zum Aufklappen tippen';
     hint.classList.add('visible');
-
 });
-
 </script>
 
 </body>
