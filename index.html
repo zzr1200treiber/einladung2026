@@ -1,362 +1,248 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digitale Einladung</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitale Einladung</title>
 
-<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=KWh1KF-EcpMWUIlRZ9OMUodJSjO7JFbIHk-KeE3ttrT4e6c0tCemJcNOcaMLn0Tri4f2CO9lHWaFYkyoSE6NAze52Reb6gLa-szxclVbZpVN8MtdNCJh9H63yFD6A848vKv_SDkaiSehZMGDeVoV5wDeNH2HlHaMVb2nfEK4OL3gIZ79cnGUKt04HLY3Zc195Bure0BoeCd2147iwR8ScUOKZCtaMGPXA3v4dzBcEdCf2exgCPsigQMrndEj4dHGk8gAXcRiHLBvZSOf8Fjarg" charset="UTF-8"></script><style>
-*{box-sizing:border-box}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body{
-    margin:0;
-    background:#111;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    overflow:hidden;
-    font-family:Arial,sans-serif;
-}
+        body {
+            margin: 0;
+            background: #111;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.startscreen{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:100;
-    transition:opacity .7s ease, visibility .7s ease;
-}
+        .startscreen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
 
-.startscreen.hidden{
-    opacity:0;
-    visibility:hidden;
-}
+        .startbutton {
+            font-size: 28px;
+            padding: 20px 38px;
+            border: none;
+            border-radius: 999px;
+            background: white;
+            color: #111;
+            cursor: pointer;
+        }
 
-.startbutton{
-    font-size:30px;
-    padding:22px 42px;
-    border:none;
-    border-radius:999px;
-    background:white;
-    color:#111;
-    cursor:pointer;
-    box-shadow:0 10px 40px rgba(255,255,255,.25);
-}
+        .starttext {
+            margin-top: 22px;
+            color: white;
+            font-size: 17px;
+            opacity: 0.8;
+            text-align: center;
+            padding: 0 20px;
+        }
 
-.starttext{
-    margin-top:24px;
-    color:white;
-    font-size:18px;
-    opacity:.75;
-    text-align:center;
-}
+        .stage {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 14px;
+        }
 
-.loading{
-    color:white;
-    margin-top:18px;
-    font-size:16px;
-    opacity:.8;
-    display:none;
-}
+        .cover-view {
+            width: min(430px, 92vw);
+            height: min(760px, 88vh);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
 
-.loading.visible{display:block}
+        .cover-view img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #111;
+        }
 
-.stage{
-    position:relative;
-    width:95vw;
-    height:90vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    perspective:3000px;
-    opacity:0;
-    transition:opacity .6s ease;
-}
+        .inside-view {
+            width: min(900px, 96vw);
+            height: min(760px, 88vh);
+            display: none;
+            background: white;
+        }
 
-.stage.visible{opacity:1}
+        .page {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: white;
+        }
 
-.card{
-    position:relative;
-    width:min(420px,90vw);
-    height:min(760px,86vh);
-    transition:width 1.2s ease;
-    transform-style:preserve-3d;
-}
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: white;
+        }
 
-.card.open{width:min(840px,95vw)}
+        .backbutton {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: none;
+            border-radius: 999px;
+            padding: 12px 22px;
+            font-size: 15px;
+            background: white;
+            color: #111;
+            cursor: pointer;
+            display: none;
+        }
 
-.inside{
-    position:absolute;
-    inset:0;
-    display:flex;
-    background:white;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,.55);
-    opacity:0;
-    transform:scaleX(.5);
-    transform-origin:left center;
-    transition:opacity .4s ease .45s, transform 1.2s ease;
-}
+        .hint {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
 
-.card.open .inside{
-    opacity:1;
-    transform:scaleX(1);
-}
+        @media (max-width: 700px) {
+            .startbutton {
+                font-size: 23px;
+                padding: 17px 30px;
+            }
 
-.page{
-    width:50%;
-    height:100%;
-    overflow:hidden;
-    background:white;
-}
+            .starttext {
+                font-size: 15px;
+            }
 
-.page img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    background:white;
-    display:block;
-}
+            .inside-view {
+                width: 96vw;
+                height: 82vh;
+            }
 
-.cover{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:20;
-    transform-origin:left center;
-    transform-style:preserve-3d;
-    transition:transform 1.8s cubic-bezier(.25,.8,.25,1), opacity .15s linear 1.15s, visibility 0s linear 1.35s;
-    cursor:pointer;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,.75);
-    background:#222;
-    backface-visibility:hidden;
-}
+            .cover-view {
+                width: 88vw;
+                height: 82vh;
+            }
 
-.cover img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-}
+            .hint {
+                font-size: 16px;
+                bottom: 64px;
+            }
 
-.card.open .cover{
-    transform:rotateY(-105deg);
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-}
-
-.card:not(.open) .cover{
-    opacity:1;
-    visibility:visible;
-    transition:transform 1.8s cubic-bezier(.25,.8,.25,1), opacity .25s linear 0s, visibility 0s linear 0s;
-}
-
-.fold-shadow{
-    position:absolute;
-    left:50%;
-    top:0;
-    width:30px;
-    height:100%;
-    background:linear-gradient(to right, rgba(0,0,0,.25), rgba(0,0,0,0));
-    opacity:0;
-    z-index:10;
-    transition:opacity .8s ease .8s;
-    pointer-events:none;
-}
-
-.card.open .fold-shadow{opacity:1}
-
-.actionbar{
-    position:absolute;
-    bottom:15px;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    gap:16px;
-    z-index:60;
-}
-
-.actionbutton{
-    border:none;
-    border-radius:999px;
-    padding:12px 24px;
-    font-size:16px;
-    cursor:pointer;
-    background:white;
-    color:#111;
-    box-shadow:0 6px 20px rgba(0,0,0,.3);
-    display:none;
-}
-
-.actionbutton.visible{display:block}
-
-.hint{
-    position:absolute;
-    bottom:80px;
-    left:0;
-    right:0;
-    text-align:center;
-    color:white;
-    font-size:22px;
-    animation:pulse 2s infinite;
-    z-index:50;
-    display:none;
-}
-
-.hint.visible{display:block}
-
-@keyframes pulse{
-    0%{opacity:.35}
-    50%{opacity:1}
-    100%{opacity:.35}
-}
-
-@media(max-width:700px){
-    .card{width:86vw;height:82vh}
-    .card.open{width:96vw;height:82vh}
-    .hint{font-size:18px;bottom:72px}
-    .startbutton{font-size:24px;padding:18px 32px}
-    .actionbutton{font-size:14px;padding:10px 18px}
-    .starttext{font-size:16px;padding:0 24px}
-}
-</style>
+            .backbutton {
+                font-size: 14px;
+                padding: 10px 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="startscreen" id="startscreen">
-    <button class="startbutton" id="startbutton">Einladung öffnen</button>
-    <div class="starttext">Bitte tippen – danach startet die Einladung</div>
-    <div class="loading" id="loading">Einladung wird geladen …</div>
-</div>
-
-<div class="stage" id="stage">
-    <div class="card" id="card">
-        <div class="inside">
-            <div class="page"><img id="insideLeft" alt="Innenseite links"></div>
-            <div class="page"><img id="insideRight" alt="Innenseite rechts"></div>
-        </div>
-
-        <div class="fold-shadow"></div>
-
-        <div class="cover" id="cover">
-            <img id="coverImg" alt="Deckblatt">
-        </div>
+    <div class="startscreen" id="startscreen">
+        <button class="startbutton" id="startbutton">Einladung öffnen</button>
+        <div class="starttext">Bitte tippen – danach startet die Einladung</div>
     </div>
 
-    <div class="hint" id="hint">Zum Aufklappen tippen</div>
+    <div class="stage" id="stage">
 
-    <div class="actionbar">
-        <button class="actionbutton" id="closebutton">⬅ Zurück zum Deckblatt</button>
+        <div class="cover-view" id="coverView">
+            <img src="./cover.jpg" alt="Deckblatt">
+        </div>
+
+        <div class="inside-view" id="insideView">
+            <div class="page">
+                <img src="./inside-left.jpg" alt="Innenseite links">
+            </div>
+
+            <div class="page">
+                <img src="./inside-right.jpg" alt="Innenseite rechts">
+            </div>
+        </div>
+
     </div>
-</div>
 
-<script>
-const startscreen = document.getElementById('startscreen');
-const startbutton = document.getElementById('startbutton');
-const loading = document.getElementById('loading');
+    <div class="hint" id="hint">Zum Anzeigen der Innenseiten tippen</div>
 
-const stage = document.getElementById('stage');
-const card = document.getElementById('card');
-const cover = document.getElementById('cover');
+    <button class="backbutton" id="backbutton">⬅ Zurück zum Deckblatt</button>
 
-const coverImg = document.getElementById('coverImg');
-const insideLeft = document.getElementById('insideLeft');
-const insideRight = document.getElementById('insideRight');
+    <script>
+        const startscreen = document.getElementById('startscreen');
+        const startbutton = document.getElementById('startbutton');
+        const stage = document.getElementById('stage');
+        const coverView = document.getElementById('coverView');
+        const insideView = document.getElementById('insideView');
+        const hint = document.getElementById('hint');
+        const backbutton = document.getElementById('backbutton');
 
-const closebutton = document.getElementById('closebutton');
-const hint = document.getElementById('hint');
+        let started = false;
+        let insideShown = false;
+        let music = null;
 
-let music = null;
-let started = false;
-let opened = false;
+        startbutton.addEventListener('click', () => {
+            if (started) return;
 
-function cacheBuster(){
-    return '?v=20260620b';
-}
+            started = true;
 
-function loadImage(img, src){
-    return new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = src + cacheBuster();
-    });
-}
+            startscreen.style.display = 'none';
+            stage.style.display = 'flex';
+            coverView.style.display = 'flex';
+            insideView.style.display = 'none';
+            hint.style.display = 'block';
 
-function startMusic(){
-    music = new Audio('musik.mp3' + cacheBuster());
-    music.loop = true;
-    music.preload = 'none';
+            music = new Audio('./musik.mp3');
+            music.loop = true;
+            music.play().catch(() => {
+                /* Falls ein Browser Audio blockiert, bleibt die Einladung trotzdem nutzbar. */
+            });
+        });
 
-    music.play().catch(() => {
-        /* Falls der Browser Audio blockiert, versuchen wir es beim nächsten Tippen erneut. */
-    });
-}
+        coverView.addEventListener('click', () => {
+            if (!started || insideShown) return;
 
-startbutton.addEventListener('click', async () => {
-    if(started) return;
+            insideShown = true;
 
-    started = true;
-    startbutton.disabled = true;
-    loading.classList.add('visible');
+            coverView.style.display = 'none';
+            insideView.style.display = 'flex';
+            hint.style.display = 'none';
+            backbutton.style.display = 'block';
 
-    try{
-        await loadImage(coverImg, 'cover.jpg');
-    }catch(e){
-        loading.textContent = 'Deckblatt konnte nicht geladen werden.';
-        return;
-    }
+            if (music && music.paused) {
+                music.play().catch(() => {});
+            }
+        });
 
-    startscreen.classList.add('hidden');
-    stage.classList.add('visible');
-    hint.classList.add('visible');
+        backbutton.addEventListener('click', () => {
+            insideShown = false;
 
-    startMusic();
-
-    loadImage(insideLeft, 'inside-left.jpg').catch(() => {});
-    loadImage(insideRight, 'inside-right.jpg').catch(() => {});
-});
-
-cover.addEventListener('click', async () => {
-    if(!started || opened) return;
-
-    opened = true;
-    hint.textContent = 'Innenseiten werden geladen …';
-
-    await Promise.allSettled([
-        insideLeft.src ? Promise.resolve() : loadImage(insideLeft, 'inside-left.jpg'),
-        insideRight.src ? Promise.resolve() : loadImage(insideRight, 'inside-right.jpg')
-    ]);
-
-    card.classList.add('open');
-    hint.classList.remove('visible');
-    closebutton.classList.add('visible');
-
-    if(music && music.paused){
-        music.play().catch(() => {});
-    }
-});
-
-closebutton.addEventListener('click', () => {
-    opened = false;
-    card.classList.remove('open');
-    closebutton.classList.remove('visible');
-    hint.textContent = 'Zum Aufklappen tippen';
-    hint.classList.add('visible');
-});
-</script>
+            insideView.style.display = 'none';
+            coverView.style.display = 'flex';
+            backbutton.style.display = 'none';
+            hint.style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>
